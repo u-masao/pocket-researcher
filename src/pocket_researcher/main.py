@@ -1,6 +1,9 @@
 import asyncio
 
-from .manager import PocketResearchManager
+from dotenv import load_dotenv
+
+load_dotenv()
+from .manager import PocketResearchManager  # noqa: E402
 
 # ポケットリサーチャーの例のエントリーポイント。
 

@@ -2,10 +2,13 @@ import re
 
 from agents import Runner
 
-from pochet_researcher.agents.background_objective_maker_agent import (
+from pocket_researcher.agents.background_objective_maker_agent import (
     background_objective_maker_agent,
 )
-from pochet_researcher.agents.full_paper_maker_from_objective_agent import (
+from pocket_researcher.agents.clear_background_and_objective_agent import (
+    clear_background_and_objective_agent,
+)
+from pocket_researcher.agents.full_paper_maker_from_objective_agent import (
     full_paper_maker_from_objective_agent,
 )
 
@@ -31,6 +34,39 @@ def test_background_objective_maker_agent():
     # それっぽい記載があるか確認
     assert re.match(
         ".*(100%|精度|画像).*", result.final_output, re.MULTILINE | re.DOTALL
+    )
+
+
+def test_clera_background_and_objective_agent():
+    """
+    背景と目的を清書する
+    """
+    prompt = (
+        "従来の機械学習モデルときたら、複雑なデータにゃ精度向上の限界が見え"
+        "隠れするのよね。そこで本研究、新アルゴリズムを引っさげ、時系列予測"
+        "ってやつをググっと向上させるのが目的なの。具体的には、曜日とか祝日"
+        "とかのデータをこねくり回し、深層学習モデルって秘密兵器で高精度な予"
+        "測モデルを錬成しちゃうわよ。"
+    )
+
+    print(f"{prompt=}")
+    result = Runner.run_syunc(clear_background_and_objective_agent, prompt)
+    print(f"{result.final_output=}")
+
+    # レスポンスがある
+    assert len(result.final_output) > 0
+
+    # レスポンスが 3000 文字以上である
+    assert len(result.final_output) >= 200
+
+    # レスポンスが 50000 文字以下である
+    assert len(result.final_output) <= 600
+
+    # それっぽい記載があるか確認
+    assert re.match(
+        ".*(機械学習|時系列|深層学習).*",
+        result.final_output,
+        re.MULTILINE | re.DOTALL,
     )
 
 

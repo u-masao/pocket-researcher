@@ -7,7 +7,8 @@ from .manager import PocketResearchManager
 
 async def main() -> None:
     mgr = PocketResearchManager()
-    await mgr.run()
+    result = await mgr.run()
+    print(f"=========================\n{result}")
 
 
 if __name__ == "__main__":

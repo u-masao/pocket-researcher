@@ -1,6 +1,7 @@
 import asyncio
 import logging
 
+
 class PocketResearchManager:
     """
     A minimal research manager for demonstration purposes.

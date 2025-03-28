@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.11,<4.0"
 dependencies = [
     "gradio>=5.23.1",
+    "mlflow>=2.21.2",
     "openai-agents>=0.0.7",
 ]
 

@@ -5,6 +5,7 @@ from .manager import PocketResearchManager
 # Run this as `python -m src.pocket-researcher.main` and enter a
 # research query, for example:
 # "Analyze the recent trends in renewable energy investments."
+
 async def main() -> None:
     query = input("Enter a research query: ")
     mgr = PocketResearchManager()

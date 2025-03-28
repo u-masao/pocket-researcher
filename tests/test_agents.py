@@ -50,7 +50,7 @@ def test_clera_background_and_objective_agent():
     )
 
     print(f"{prompt=}")
-    result = Runner.run_syunc(clear_background_and_objective_agent, prompt)
+    result = Runner.run_sync(clear_background_and_objective_agent, prompt)
     print(f"{result.final_output=}")
 
     # レスポンスがある

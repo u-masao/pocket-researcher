@@ -23,11 +23,8 @@ mlflow.set_experiment("PocketResearcher")
 mlflow.openai.autolog()
 
 USAGE = """
-    ========================================================
-    このアプリケーションはあなたのリサーチを助けるものです。
-    考えたいことや調べたいことを入力することで、論文の形式で
-    リサーチ結果を返します。
-    ========================================================
+    > 考えたいことや調べたいことを入力してください。
+    > 論文の形式でリサーチ結果を表示します。
 """
 
 
@@ -58,14 +55,11 @@ class PocketResearchManager:
             )
             paper = await self._make_paper_from_abstract(abstract)
 
-        print(f">>> 結果です\n\n{paper}")
-        print("Research completed.")
-
         return paper
 
     async def _read_multiple_input(self) -> str:
         """標準入力を読み取る関数"""
-        print("    (入力終了は Ctrl+D または Ctrl+Z を入力)")
+        print(">    (入力終了は Ctrl+D または Ctrl+Z を入力)")
         query = sys.stdin.readlines()
         return "".join(query)
 
@@ -81,10 +75,10 @@ class PocketResearchManager:
         while not conferm_background_and_objective:
 
             # 背景と目的のラフを入力
-            print(">>> 考えたいことや調べたいことの背景と目的を書いて:")
+            print("> 考えたいことや調べたいことの背景と目的を書いて:")
             query = await self._read_multiple_input()
-            print(f">>> 背景と目的:\n\n```\n{query}\n```")
-            print(">>> 回答作成中")
+            print(f"> 背景と目的:\n\n```\n{query}\n```")
+            print("> 回答作成中")
 
             # レビュー生成
             result = await Runner.run(
@@ -92,13 +86,14 @@ class PocketResearchManager:
                 input=query,
             )
             print(
-                f">>> 背景と目的と指摘事項:\n\n```\n{result.final_output}\n```"
+                f"> 背景と目的と指摘事項:\n\n```\n{result.final_output}\n```"
             )
 
             # 人間に確認するループ
             while True:
                 command = input(
-                    ">>> 背景と目的を清書しますか？(yes/no)"
+                    "> この後の処理はノンストップです。\n"
+                    "> 背景と目的を清書しますか？(yes/no)"
                 ).lower()
 
                 # 入力チェック
@@ -113,7 +108,7 @@ class PocketResearchManager:
                 break
 
         # 結果を出力
-        print(f"背景と目的のドラフトが確定しました。\n\n```\n{query}\n```")
+        print(f"> 背景と目的のドラフトが確定しました。\n\n```\n{query}\n```")
         # 最後にユーザーが入力した文章を返す
         return query
 
@@ -122,14 +117,16 @@ class PocketResearchManager:
         入力されたテキストを「背景と目的」として清書する。
         """
 
-        print(">>> 背景と目的を清書中")
+        print("> 背景と目的を清書中")
 
         # 背景と目的を清書中
         result = await Runner.run(
             clear_background_and_objective_agent,
             input=draft,
         )
-        print(f"背景と目的を清書しました。\n\n```\n{result.final_output}\n```")
+        print(
+            f"> 背景と目的を清書しました。\n\n```\n{result.final_output}\n```"
+        )
 
         return result.final_output
 
@@ -138,7 +135,7 @@ class PocketResearchManager:
         入力された「背景と目的」から仮の論文を作成する。
         """
 
-        print(">>> 仮の論文を作成中")
+        print("> 仮の論文を作成中")
 
         # 仮の論文を作成中
         result = await Runner.run(
@@ -146,7 +143,7 @@ class PocketResearchManager:
             input=objective,
         )
 
-        print(f"仮の論文を作成しました。\n\n```\n{result.final_output}\n```")
+        print(f"> 仮の論文を作成しました。\n\n```\n{result.final_output}\n```")
         return result.final_output
 
     async def _make_abstract_from_full_paper(self, full_paper: str) -> str:
@@ -154,7 +151,7 @@ class PocketResearchManager:
         入力された「仮の論文」からアブストラクトを作成する。
         """
 
-        print(">>> アブストラクトを作成中")
+        print("> アブストラクトを作成中")
 
         # アブストラクトを作成
         result = await Runner.run(
@@ -163,7 +160,7 @@ class PocketResearchManager:
         )
 
         print(
-            f"アブストラクトを作成しました。\n\n```\n{result.final_output}\n```"
+            f"> アブストラクトを作成しました。\n\n```\n{result.final_output}\n```"
         )
         return result.final_output
 
@@ -172,7 +169,7 @@ class PocketResearchManager:
         アブストラクトから論文を作成する。
         """
 
-        print(">>> 論文を作成中")
+        print("> 論文を作成中")
 
         # 論文を作成中
         result = await Runner.run(
@@ -180,5 +177,5 @@ class PocketResearchManager:
             input=abstract,
         )
 
-        print(f"論文を作成しました。\n\n```\n{result.final_output}\n```")
+        print(f"> 論文を作成しました。\n\n```\n{result.final_output}\n```")
         return result.final_output

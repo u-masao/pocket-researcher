@@ -6,6 +6,7 @@ from .manager import PocketResearchManager
 # research query, for example:
 # "Analyze the recent trends in renewable energy investments."
 
+
 async def main() -> None:
     query = input("Enter a research query: ")
     mgr = PocketResearchManager()

@@ -10,6 +10,7 @@ CLEAR_BACKGROUND_AND_OBJECTIVE_PROMPT = """
 あなたは有能な研究者です。
 ユーザーは論文の背景と目的を下書きしたものを提示します。
 これを清書し、背景および目的として完成させてください。
+出力は日本語とします。
 """
 clear_background_and_objective_agent = Agent(
     name="背景と目的を清書するエージェント",

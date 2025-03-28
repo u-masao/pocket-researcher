@@ -11,6 +11,7 @@ BACKGROUND_OBJECTIVE_MAKER_PROMPT = """
 アドバイスをしてください。
 ユーザーは論文の背景と目的を下書きしたものを提示します。
 これを3〜5行で要約し、内容に飛躍や不足があれば明確に指摘してください。
+出力は日本語とします。
 """
 
 background_objective_maker_agent = Agent(

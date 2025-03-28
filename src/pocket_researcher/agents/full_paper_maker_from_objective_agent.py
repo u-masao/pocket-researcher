@@ -15,6 +15,7 @@ FULL_PAPER_MAKER_FROM_OBJECTIVE_PROMPT = """
 - 不明な数値があれば、不正確な値を入れずフェルミ推定などの推定を行い、推定値を代入してくだ>さい
 - ただし、推定値には必ず（推定値）と明記してください
 - 文字数はおよそ1万文字とします
+- 言語は日本語とします
 """
 
 full_paper_maker_from_objective_agent = Agent(

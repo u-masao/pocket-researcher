@@ -93,7 +93,7 @@ class PocketResearchManager:
             while True:
                 command = input(
                     "> この後の処理はノンストップです。\n"
-                    "> 背景と目的を清書しますか？(yes/no)"
+                    "> 背景と目的を確定して論文を作成しますか？(yes/no):"
                 ).lower()
 
                 # 入力チェック

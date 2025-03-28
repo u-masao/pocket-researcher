@@ -2,6 +2,7 @@ import re
 
 from agents import Runner
 
+from pocket_researcher.agents.abstract_maker_agent import abstract_maker_agent
 from pocket_researcher.agents.background_objective_maker_agent import (
     background_objective_maker_agent,
 )
@@ -96,6 +97,38 @@ def test_full_paper_maker_from_objective_agent():
     # それっぽい記載があるか確認
     assert re.match(
         ".*(機械学習|時系列|深層学習).*",
+        result.final_output,
+        re.MULTILINE | re.DOTALL,
+    )
+
+
+def test_abstract_maker_agent():
+    """
+    背景と目的をもとに推定値いりのアブストラクトを書く
+    背景と目的を送信すると1万字の論文を書く
+    """
+    prompt = (
+        "従来の機械学習モデルは、複雑なデータに対して精度向上の限界が見られる。"
+        "本研究では、新たなアルゴリズムを導入し、特に時系列予測の分野における"
+        "予測精度を大幅に向上させることを目的とする。具体的には、曜日と祝日の"
+        "データを組み合わせ、深層学習モデルを用いて高精度な予測モデルを構築する。"
+    )
+    print(f"{prompt=}")
+    result = Runner.run_sync(abstract_maker_agent, prompt)
+    print(f"{result.final_output=}")
+
+    # レスポンスがある
+    assert len(result.final_output) > 0
+
+    # レスポンスが 200 文字以上である
+    assert len(result.final_output) >= 200
+
+    # レスポンスが 2000 文字以下である
+    assert len(result.final_output) <= 2000
+
+    # それっぽい記載があるか確認
+    assert re.match(
+        ".*(機械学習|時系列|深層学習|推定値).*",
         result.final_output,
         re.MULTILINE | re.DOTALL,
     )

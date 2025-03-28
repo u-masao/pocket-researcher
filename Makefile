@@ -10,4 +10,4 @@ test:
 lint:
 	uv run isort src tests
 	uv run black -l 79 src tests
-	uv run flake8 src tests
+	uv run flake8 src tests --ignore E402

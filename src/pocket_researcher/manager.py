@@ -75,7 +75,7 @@ class PocketResearchManager:
         while not conferm_background_and_objective:
 
             # 背景と目的のラフを入力
-            print("> 考えたいことや調べたいことの背景と目的を書いて:")
+            print("> 考えたいことや調べたいことの背景と目的を書いてください:")
             query = await self._read_multiple_input()
             print(f"> 背景と目的:\n\n```\n{query}\n```")
             print("> 回答作成中")

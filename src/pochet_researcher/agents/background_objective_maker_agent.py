@@ -5,9 +5,6 @@
 import os
 
 from agents import Agent
-from dotenv import load_dotenv
-
-load_dotenv()
 
 BACKGROUND_OBJECTIVE_MAKER_PROMPT = """
 あなたは有能な研究者です。実験の計画を立案するためにユーザーに対して的確な
@@ -19,5 +16,5 @@ BACKGROUND_OBJECTIVE_MAKER_PROMPT = """
 background_objective_maker_agent = Agent(
     name="背景と目的を作るエージェント",
     instructions=BACKGROUND_OBJECTIVE_MAKER_PROMPT,
-    model=os.getenv("BACKGROUND_OBJECTIVE_MAKER_MODEL", None),
+    model=os.getenv("BACKGROUND_OBJECTIVE_MAKER_MODEL", "o3-mini"),
 )

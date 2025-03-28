@@ -4,7 +4,7 @@ import logging
 
 class PocketResearchManager:
     """
-    A minimal research manager for demonstration purposes.
+    デモ用の最小限のリサーチマネージャー。
     """
 
     def __init__(self) -> None:
@@ -13,6 +13,6 @@ class PocketResearchManager:
 
     async def run(self, query: str) -> None:
         self.logger.info(f"Running research for query: {query}")
-        # Simulate a simple research process
+        # 簡単なリサーチプロセスをシミュレート
         await asyncio.sleep(1)
         self.logger.info("Research completed.")

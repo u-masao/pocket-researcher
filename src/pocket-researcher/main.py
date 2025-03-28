@@ -1,10 +1,10 @@
 import asyncio
 from .manager import PocketResearchManager
 
-# Entrypoint for the pocket researcher example.
-# Run this as `python -m src.pocket-researcher.main` and enter a
-# research query, for example:
-# "Analyze the recent trends in renewable energy investments."
+# ポケットリサーチャーの例のエントリーポイント。
+# `python -m src.pocket-researcher.main` として実行し、
+# リサーチクエリを入力します。例えば：
+# "再生可能エネルギー投資の最近の動向を分析してください。"
 
 
 async def main() -> None:

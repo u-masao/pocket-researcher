@@ -2,6 +2,9 @@ include .env
 
 export OPENAI_API_KEY := $(OPENAI_API_KEY)
 
+run:
+	PYTHONPATH=src uv run python -m pocket_researcher.main
+
 test:
 	PYTHONPATH=src uv run pytest -s tests
 lint:

@@ -1,6 +1,9 @@
 import re
+from pathlib import Path
 
-from agents import Runner
+import pytest
+from agents import Runner, gen_trace_id, trace
+from pydantic import BaseModel
 
 from pocket_researcher.agents.abstract_maker_agent import abstract_maker_agent
 from pocket_researcher.agents.background_objective_maker_agent import (
@@ -13,8 +16,27 @@ from pocket_researcher.agents.full_paper_maker_from_objective_agent import (
     full_paper_maker_from_objective_agent,
 )
 
+# 実行中のファイル名から拡張子を除いた部分を取得
+TRACE_NAME = Path(__file__).stem
 
-def test_background_objective_maker_agent():
+
+class TraceInfo(BaseModel):
+    """
+    trace_id を保持するクラス
+    """
+
+    trace_id: str
+
+
+@pytest.fixture(scope="module")
+def trace_info():
+    """
+    TraceInfo インスタンスを作成して返す
+    """
+    return TraceInfo(trace_id=gen_trace_id())
+
+
+def test_background_objective_maker_agent(trace_info):
     """
     ツッコミどころのある背景と目的を送信すると、
     エージェントが突っ込んでくれる
@@ -26,7 +48,9 @@ def test_background_objective_maker_agent():
         "モデルを試し、ほぼ100%精度を目指す。多くの人に喜ばれる成果を期待する。"
     )
     print(f"{prompt=}")
-    result = Runner.run_sync(background_objective_maker_agent, prompt)
+    with trace(TRACE_NAME, trace_id=trace_info.trace_id):
+        result = Runner.run_sync(background_objective_maker_agent, prompt)
+
     print(f"{result.final_output=}")
 
     # レスポンスがある
@@ -38,7 +62,7 @@ def test_background_objective_maker_agent():
     )
 
 
-def test_clera_background_and_objective_agent():
+def test_clera_background_and_objective_agent(trace_info):
     """
     背景と目的を清書する
     """
@@ -51,7 +75,8 @@ def test_clera_background_and_objective_agent():
     )
 
     print(f"{prompt=}")
-    result = Runner.run_sync(clear_background_and_objective_agent, prompt)
+    with trace(TRACE_NAME, trace_id=trace_info.trace_id):
+        result = Runner.run_sync(clear_background_and_objective_agent, prompt)
     print(f"{result.final_output=}")
 
     # レスポンスがある
@@ -71,7 +96,7 @@ def test_clera_background_and_objective_agent():
     )
 
 
-def test_full_paper_maker_from_objective_agent():
+def test_full_paper_maker_from_objective_agent(trace_info):
     """
     背景と目的を送信すると1万字の論文を書く
     """
@@ -82,7 +107,8 @@ def test_full_paper_maker_from_objective_agent():
         "データを組み合わせ、深層学習モデルを用いて高精度な予測モデルを構築する。"
     )
     print(f"{prompt=}")
-    result = Runner.run_sync(full_paper_maker_from_objective_agent, prompt)
+    with trace(TRACE_NAME, trace_id=trace_info.trace_id):
+        result = Runner.run_sync(full_paper_maker_from_objective_agent, prompt)
     print(f"{result.final_output=}")
 
     # レスポンスがある
@@ -102,10 +128,9 @@ def test_full_paper_maker_from_objective_agent():
     )
 
 
-def test_abstract_maker_agent():
+def test_abstract_maker_agent(trace_info):
     """
     背景と目的をもとに推定値いりのアブストラクトを書く
-    背景と目的を送信すると1万字の論文を書く
     """
     prompt = (
         "従来の機械学習モデルは、複雑なデータに対して精度向上の限界が見られる。"
@@ -114,7 +139,8 @@ def test_abstract_maker_agent():
         "データを組み合わせ、深層学習モデルを用いて高精度な予測モデルを構築する。"
     )
     print(f"{prompt=}")
-    result = Runner.run_sync(abstract_maker_agent, prompt)
+    with trace(TRACE_NAME, trace_id=trace_info.trace_id):
+        result = Runner.run_sync(abstract_maker_agent, prompt)
     print(f"{result.final_output=}")
 
     # レスポンスがある

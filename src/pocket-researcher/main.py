@@ -1,4 +1,5 @@
 import asyncio
+
 from .manager import PocketResearchManager
 
 # ポケットリサーチャーの例のエントリーポイント。
@@ -11,6 +12,7 @@ async def main() -> None:
     query = input("Enter a research query: ")
     mgr = PocketResearchManager()
     await mgr.run(query)
+
 
 if __name__ == "__main__":
     asyncio.run(main())

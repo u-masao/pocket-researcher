@@ -2,6 +2,9 @@ include .env
 
 export OPENAI_API_KEY := $(OPENAI_API_KEY)
 
+ui:
+	PYTHONPATH=src uv run gradio src/pocket_researcher/ui.py
+
 run:
 	PYTHONPATH=src uv run python -m pocket_researcher.main
 

@@ -5,17 +5,11 @@ import textwrap
 import mlflow
 from agents import Runner, gen_trace_id, trace
 
-from pocket_researcher.agents.abstract_maker_agent import abstract_maker_agent
-from pocket_researcher.agents.background_objective_maker_agent import (
+from pocket_researcher.custom_agents import (
+    abstract_maker_agent,
     background_objective_maker_agent,
-)
-from pocket_researcher.agents.clear_background_and_objective_agent import (
     clear_background_and_objective_agent,
-)
-from pocket_researcher.agents.full_paper_maker_from_objective_agent import (
     full_paper_maker_from_objective_agent,
-)
-from pocket_researcher.agents.paper_maker_from_abstract_agent import (
     paper_maker_from_abstract_agent,
 )
 

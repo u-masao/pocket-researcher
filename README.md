@@ -58,18 +58,46 @@ Pocket Researcher は、大規模言語モデル（LLM）を活用した自律�
 
 以下のコマンドを使用してアプリケーションを実行します。
 
+Web インタフェース(Gradio)はこちら。
+
 ```bash
-make run
+make gui
 ```
 
-## 実行例
+CLI バージョンはこちら。
+
+```bash
+make cli
+```
+
+## 実行例 GUI バージョン
+
+
+```bash
+$ make gui
+PYTHONPATH=src uv run gradio src/pocket_researcher/ui.py
+Watching: '/home/masao/work/pocket-researcher/src/pocket_researcher' 
+'/home/masao/work/pocket-researcher'
+
+* Running on local URL:  http://127.0.0.1:7860
+
+To create a public link, set `share=True` in `launch()`.
+```
+
+http://127.0.0.1:7860/ を開きます。
+
+![画面イメージ](images/gui_animation.gif "gui animation")
+
+
+
+## 実行例 CLI バージョン
 
 model: o3-mini-2025-01-31
 
 [全文はこちら](EXAMPLE.md)
 
 
-$ make run
+$ make cli
 PYTHONPATH=src uv run python -m pocket_researcher.main
 
 > 考えたいことや調べたいことを入力してください。

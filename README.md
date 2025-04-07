@@ -86,8 +86,13 @@ To create a public link, set `share=True` in `launch()`.
 
 http://127.0.0.1:7860/ を開きます。
 
-![画面イメージ](images/gui_animation.gif "gui animation")
+画面イメージです。次の操作をしています。
 
+1. Examples のテキストをダブルクリック
+1. 「レビュー」をクリック
+1. 「調査開始」をクリック
+
+![画面イメージ](images/gui_animation.gif "gui animation")
 
 
 ## 実行例 CLI バージョン

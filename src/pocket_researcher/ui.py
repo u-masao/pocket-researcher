@@ -111,6 +111,7 @@ async def research(text, history):
         yield append_message("assistnat", f"{title}します")
         paper = await manager.make_paper_from_abstract(abstract)
         yield append_message("assistant", "# レポート(完成)")
+        gr.Info("レポートが完成しました！", duration=5)
         yield append_message("assistant", paper)
 
 

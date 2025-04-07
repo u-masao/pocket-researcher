@@ -1,7 +1,7 @@
 [project]
 name = "pocket-researcher"
-version = "0.1.0"
-description = "自律的にリサーチしてくれるエージェントです。"
+version = "0.1.2"
+description = "LLMを活用した自律調査エージェント。手軽に情報収集、概要把握。"
 readme = "README.md"
 requires-python = ">=3.11,<4.0"
 dependencies = [
@@ -9,6 +9,16 @@ dependencies = [
     "mlflow>=2.21.2",
     "openai-agents>=0.0.7",
 ]
+authors = [
+    { name="u-masao", email="4973920+u-masao@users.noreply.github.com" },
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+]
+Homepage = "https://github.com/u-masao/pocket-researcher"
+Repository = "https://github.com/u-masao/pocket-researcher"
+
 
 [dependency-groups]
 dev = [
@@ -17,3 +27,7 @@ dev = [
     "isort>=6.0.1",
     "pytest>=8.3.5",
 ]
+
+[build-system]
+requires = ["hatchling"] # または "setuptools>=61.0", "wheel" など
+build-backend = "hatchling.build" # または "setuptools.build_meta:__legacy__" など

@@ -52,7 +52,7 @@ async def review_draft(text, history):
             text.strip()
         )
         async for response in responses:
-            yield append_message("assistant", "response")
+            yield append_message("assistant", response)
 
 
 async def research(text, history):

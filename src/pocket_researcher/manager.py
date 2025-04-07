@@ -41,29 +41,44 @@ class PocketResearchManager:
         print(textwrap.dedent(USAGE))
 
         with trace("リサーチサービス", trace_id=gen_trace_id()):
-            objective_draft = (
-                await self._input_background_and_objective_draft()
-            )
-            objective = await self._clear_background_and_objective(
+            objective_draft = await self.input_background_and_objective_draft()
+            objective = await self.clear_background_and_objective(
                 objective_draft
             )
-            full_paper_temp = await self._make_full_paper_from_objective(
+            full_paper_temp = await self.make_full_paper_from_objective(
                 objective
             )
-            abstract = await self._make_abstract_from_full_paper(
+            abstract = await self.make_abstract_from_full_paper(
                 full_paper_temp
             )
-            paper = await self._make_paper_from_abstract(abstract)
+            paper = await self.make_paper_from_abstract(abstract)
 
         return paper
 
-    async def _read_multiple_input(self) -> str:
+    async def read_multiple_input(self) -> str:
         """標準入力を読み取る関数"""
         print(">    (入力終了は Ctrl+D または Ctrl+Z を入力)")
         query = sys.stdin.readlines()
         return "".join(query)
 
-    async def _input_background_and_objective_draft(self) -> str:
+    async def review_background_and_objective_generator(
+        self, query: str
+    ) -> str:
+        """
+        背景と目的のテキストをレビューするエージェント
+        """
+        yield f"### 背景と目的:\n\n```\n{query}\n```"
+        yield "### 回答作成中"
+
+        # レビュー生成
+        result = await Runner.run(
+            background_objective_maker_agent,
+            input=query,
+        )
+
+        yield f"### 背景と目的と指摘事項:\n\n```\n{result.final_output}\n```"
+
+    async def input_background_and_objective_draft(self) -> str:
         """
         ユーザーから背景と目的のラフを受け取り要約と評価をする。
         標準入力を読み取り完了確認を行う。
@@ -76,18 +91,14 @@ class PocketResearchManager:
 
             # 背景と目的のラフを入力
             print("> 考えたいことや調べたいことの背景と目的を書いてください:")
-            query = await self._read_multiple_input()
-            print(f"> 背景と目的:\n\n```\n{query}\n```")
-            print("> 回答作成中")
+            query = await self.read_multiple_input()
 
-            # レビュー生成
-            result = await Runner.run(
-                background_objective_maker_agent,
-                input=query,
-            )
-            print(
-                f"> 背景と目的と指摘事項:\n\n```\n{result.final_output}\n```"
-            )
+            # レビューを依頼
+            results = self.review_background_and_objective_generator(query)
+
+            # 進行状況と結果を表示
+            async for result in results:
+                print(result)
 
             # 人間に確認するループ
             while True:
@@ -112,7 +123,7 @@ class PocketResearchManager:
         # 最後にユーザーが入力した文章を返す
         return query
 
-    async def _clear_background_and_objective(self, draft: str) -> str:
+    async def clear_background_and_objective(self, draft: str) -> str:
         """
         入力されたテキストを「背景と目的」として清書する。
         """
@@ -130,7 +141,7 @@ class PocketResearchManager:
 
         return result.final_output
 
-    async def _make_full_paper_from_objective(self, objective: str) -> str:
+    async def make_full_paper_from_objective(self, objective: str) -> str:
         """
         入力された「背景と目的」から仮の論文を作成する。
         """
@@ -146,7 +157,7 @@ class PocketResearchManager:
         print(f"> 仮の論文を作成しました。\n\n```\n{result.final_output}\n```")
         return result.final_output
 
-    async def _make_abstract_from_full_paper(self, full_paper: str) -> str:
+    async def make_abstract_from_full_paper(self, full_paper: str) -> str:
         """
         入力された「仮の論文」からアブストラクトを作成する。
         """
@@ -164,7 +175,7 @@ class PocketResearchManager:
         )
         return result.final_output
 
-    async def _make_paper_from_abstract(self, abstract: str) -> str:
+    async def make_paper_from_abstract(self, abstract: str) -> str:
         """
         アブストラクトから論文を作成する。
         """
